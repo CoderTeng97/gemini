@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mm.gemini.core.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mm.gemini.core.model.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="sex" property="sex"/>
+        <result column="birthday" property="birthday"/>
+        <result column="head_portrait" property="headPortrait"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="account_type" property="accountType"/>
+        <result column="relation_uid" property="relationUid"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="is_del" property="isDel"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, sex, birthday, head_portrait, email, password, account_type, relation_uid, gmt_create, gmt_modified, is_del
+    </sql>
+
+    <sql id="BaseInfo_Column_List">
+       username, sex, birthday, head_portrait,email, account_type
+    </sql>
+
+    <select id="selectHeadPortraitByUid" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT  head_portrait from tb_user where id = #{uid} and is_del = 0
+    </select>
+
+    <select id="selectGmtCreateByUid" parameterType="java.lang.Long" resultType="java.time.LocalDateTime">
+        SELECT  gmt_create from tb_user where id = #{uid}
+    </select>
+
+    <select id="selectBaseInfoById" parameterType="java.lang.Long"
+            resultType="com.mm.gemini.core.pojo.vo.UserBaseInfoVO">
+        SELECT
+        <include refid="BaseInfo_Column_List"></include>
+        from tb_user where id = #{id} and is_del = 0
+    </select>
+
+
+    <update id="updateRelationUidById">
+        update tb_user set relation_uid = relationUid where id = #{uid}
+    </update>
+
+</mapper>
